@@ -1173,13 +1173,14 @@ class Ui_MainWindow(object):
         self.gridLayout = QGridLayout()
         self.gridLayout.setObjectName(u"gridLayout")
         self.gridLayout.setContentsMargins(-1, -1, -1, 0)
+        # 创建路径输入框
         self.lineEdit = QLineEdit(self.frame_content_wid_1)
         self.lineEdit.setObjectName(u"lineEdit")
         self.lineEdit.setMinimumSize(QSize(0, 30))
         self.lineEdit.setStyleSheet(u"background-color: rgb(33, 37, 43);")
-
         self.gridLayout.addWidget(self.lineEdit, 0, 0, 1, 1)
 
+        # 创建“选择文件夹”按钮
         self.pushButton = QPushButton(self.frame_content_wid_1)
         self.pushButton.setObjectName(u"pushButton")
         self.pushButton.setMinimumSize(QSize(150, 30))
@@ -1189,9 +1190,9 @@ class Ui_MainWindow(object):
         icon4 = QIcon()
         icon4.addFile(u":/icons/images/icons/cil-folder-open.png", QSize(), QIcon.Normal, QIcon.Off)
         self.pushButton.setIcon(icon4)
-
         self.gridLayout.addWidget(self.pushButton, 0, 1, 1, 1)
 
+        # 创建一个标签（用于显示版本信息等提示）
         self.labelVersion_3 = QLabel(self.frame_content_wid_1)
         self.labelVersion_3.setObjectName(u"labelVersion_3")
         self.labelVersion_3.setStyleSheet(u"color: rgb(113, 126, 149);")
@@ -1200,18 +1201,17 @@ class Ui_MainWindow(object):
 
         self.gridLayout.addWidget(self.labelVersion_3, 1, 0, 1, 2)
 
-
+        # 将整个网格布局添加到水平布局中
         self.horizontalLayout_9.addLayout(self.gridLayout)
 
-
+        # 将内容区域容器加入到上级布局中
         self.verticalLayout_17.addWidget(self.frame_content_wid_1)
 
-
+        # 将整体内容（标题 + 输入）加入到 row_1 的布局中
         self.verticalLayout_16.addWidget(self.frame_div_content_1)
-
-
         self.verticalLayout.addWidget(self.row_1)
 
+        # 创建第二行组件容器 row_2（用于展示各种控件）
         self.row_2 = QFrame(self.widgets)
         self.row_2.setObjectName(u"row_2")
         self.row_2.setMinimumSize(QSize(0, 150))
@@ -1326,10 +1326,9 @@ class Ui_MainWindow(object):
 
 
         self.verticalLayout_19.addLayout(self.gridLayout_2)
-
-
         self.verticalLayout.addWidget(self.row_2)
 
+        # 创建第三行 row_3，用于显示 QTableWidget 表格
         self.row_3 = QFrame(self.widgets)
         self.row_3.setObjectName(u"row_3")
         self.row_3.setMinimumSize(QSize(0, 150))
@@ -1339,6 +1338,8 @@ class Ui_MainWindow(object):
         self.horizontalLayout_12.setSpacing(0)
         self.horizontalLayout_12.setObjectName(u"horizontalLayout_12")
         self.horizontalLayout_12.setContentsMargins(0, 0, 0, 0)
+
+        # 创建 QTableWidget 表格控件
         self.tableWidget = QTableWidget(self.row_3)
         if (self.tableWidget.columnCount() < 4):
             self.tableWidget.setColumnCount(4)
@@ -1350,6 +1351,7 @@ class Ui_MainWindow(object):
         self.tableWidget.setHorizontalHeaderItem(2, __qtablewidgetitem2)
         __qtablewidgetitem3 = QTableWidgetItem()
         self.tableWidget.setHorizontalHeaderItem(3, __qtablewidgetitem3)
+        # 设置行数为16（如果当前行数不足）
         if (self.tableWidget.rowCount() < 16):
             self.tableWidget.setRowCount(16)
         font4 = QFont()
@@ -1476,71 +1478,160 @@ class Ui_MainWindow(object):
 
         self.stackedWidget.addWidget(self.new_page)
 
-
-
-        # 添加图像复原页面 R_image
+        # 创建图像复原页面 R_image，采用 row_1 / row_2 / row_3 风格构建，支持动态对比恢复效果
         self.R_image = QWidget()
-        self.R_image.setObjectName(u"R_image")
+        self.R_image.setObjectName("R_image") # 设置背景为白色
+        self.R_image.setStyleSheet("background-color: white;")
         self.verticalLayout_R_image = QVBoxLayout(self.R_image)
-        self.verticalLayout_R_image.setObjectName(u"verticalLayout_R_image")
         self.verticalLayout_R_image.setContentsMargins(10, 10, 10, 10)
-        self.verticalLayout_R_image.setSpacing(15)
+        self.verticalLayout_R_image.setSpacing(0) # 设置各部分之间的间距为 0 像素
 
-        # ========== 文件选择行 ==========
-        self.fileLayout = QHBoxLayout()
-        self.fileLayout.setObjectName(u"fileLayout")
-        self.lineEdit_path = QLineEdit(self.R_image)
-        self.lineEdit_path.setObjectName(u"lineEdit_path")
-        self.lineEdit_path.setPlaceholderText("选择图片路径...")
-        self.lineEdit_path.setMinimumHeight(30)
-        self.lineEdit_path.setStyleSheet(u"background-color: #2c2f4a; padding: 5px; border: 1px solid #666;")
-        self.btn_browse = QPushButton(self.R_image)
-        self.btn_browse.setObjectName(u"btn_browse")
+        # ========================= row_1 文件选择 =========================
+        self.row_1 = QFrame(self.R_image)
+        self.row_1.setMinimumHeight(100)
+        self.row_1.setMaximumHeight(100)
+        self.row_1.setFrameShape(QFrame.StyledPanel)
+        self.row_1.setFrameShadow(QFrame.Raised)
+        self.verticalLayout_16 = QVBoxLayout(self.row_1)
+        self.verticalLayout_16.setSpacing(0)
+        self.verticalLayout_16.setContentsMargins(0, 0, 0, 0)
+
+        self.frame_div_content_1 = QFrame(self.row_1)
+        self.frame_div_content_1.setMinimumSize(QSize(0, 110))
+        self.frame_div_content_1.setMaximumSize(QSize(16777215, 110))
+        self.frame_div_content_1.setFrameShape(QFrame.NoFrame)
+        self.frame_div_content_1.setFrameShadow(QFrame.Raised)
+        self.verticalLayout_17 = QVBoxLayout(self.frame_div_content_1)
+        self.verticalLayout_17.setSpacing(0)
+        self.verticalLayout_17.setContentsMargins(0, 0, 0, 0)
+        # 输入路径和按钮
+        self.frame_content_wid_1 = QFrame(self.frame_div_content_1)
+        self.frame_content_wid_1.setFrameShape(QFrame.NoFrame)
+        self.frame_content_wid_1.setFrameShadow(QFrame.Raised)
+        self.horizontalLayout_9 = QHBoxLayout(self.frame_content_wid_1)
+        self.gridLayout = QGridLayout()
+        self.gridLayout.setContentsMargins(-1, -1, -1, 0)
+        # 路径输入框
+        self.lineEdit_path = QLineEdit(self.frame_content_wid_1)
+        self.lineEdit_path.setPlaceholderText("Type here")
+        self.lineEdit_path.setMinimumSize(QSize(0, 30))
+        self.lineEdit_path.setStyleSheet(
+            "background-color: #5a6ea8; color: white; border-radius: 5px; padding: 6px; border: none;")
+        self.gridLayout.addWidget(self.lineEdit_path, 0, 0, 1, 1)
+        # 选择文件按钮
+        self.btn_browse = QPushButton("Open", self.frame_content_wid_1)
         self.btn_browse.setIcon(QIcon(":/icons/images/icons/cil-folder-open.png"))
-        self.btn_browse.setText("打开")
-        self.btn_browse.setFixedWidth(200)  # 设置固定宽度为 80 像素
-        self.btn_browse.setStyleSheet(u"background-color: #ff79c6; padding: 5px; color: black;")
-        self.fileLayout.addWidget(self.lineEdit_path)
-        self.fileLayout.addWidget(self.btn_browse)
-        self.verticalLayout_R_image.addLayout(self.fileLayout)
+        self.btn_browse.setMinimumSize(QSize(150, 30))
+        self.btn_browse.setCursor(QCursor(Qt.PointingHandCursor))
+        self.btn_browse.setStyleSheet(
+            "background-color: #5a6ea8; color: white; border-radius: 5px; padding: 6px 12px; border: none;")
+        self.gridLayout.addWidget(self.btn_browse, 0, 1, 1, 1)
+        # 说明文字
+        self.label_description = QLabel("选择所需的图像恢复与检测算法组合，点击‘开始检测’按钮后，即可执行图像复原或复原+检测流程。", self.frame_content_wid_1)
+        self.label_description.setStyleSheet("color: #6a7ba8; font-size: 9pt;")
+        self.gridLayout.addWidget(self.label_description, 1, 0, 1, 2)
 
-        # ========== 控制行 ==========
-        self.controlLayout = QHBoxLayout()
-        self.controlLayout.setObjectName(u"controlLayout")
-        self.combo1 = QComboBox(self.R_image)
-        self.combo1.setObjectName(u"combo1")
-        self.combo1.addItems(["去雨", "去雾", "低光照", "ALL-IN-ONE"])
-        self.combo1.setMinimumHeight(30)
-        self.combo1.setStyleSheet(u"background-color: #2c2f4a; padding: 5px;")
-        self.combo2 = QComboBox(self.R_image)
-        self.combo2.setObjectName(u"combo2")
+        self.horizontalLayout_9.addLayout(self.gridLayout)
+        self.verticalLayout_17.addWidget(self.frame_content_wid_1)
+        self.verticalLayout_16.addWidget(self.frame_div_content_1)
+        self.verticalLayout_R_image.addWidget(self.row_1)
+
+        # ========================= row_2 控制栏 =========================
+        self.row_2 = QFrame(self.R_image)
+        self.row_2.setMinimumHeight(30)
+        self.row_2.setMaximumHeight(40)
+        self.row_2.setFrameShape(QFrame.StyledPanel)
+        self.row_2.setFrameShadow(QFrame.Raised)
+
+        self.horizontalLayout_10 = QHBoxLayout(self.row_2)
+        self.horizontalLayout_10.setContentsMargins(0, 0, 10, 0)  # 右侧留 10 像素空隙更贴边
+        self.horizontalLayout_10.setSpacing(10)
+
+        # 模式选择下拉框
+        self.combo1 = QComboBox()
+        self.combo1.addItems(["去雨", "去雾", "低光增强", "ALL-IN-ONE"])
+        self.combo1.setFixedSize(150, 30)
+        self.combo1.setStyleSheet("""
+            QComboBox {
+                background-color: #ffffff;
+                color: black;
+                border: 2px solid #5a6ea8;
+                border-radius: 5px;
+                padding: 5px;
+            }
+        """)
+
+        # 功能选择下拉框
+        self.combo2 = QComboBox()
         self.combo2.addItems(["复原", "复原+检测"])
-        self.combo2.setMinimumHeight(30)
-        self.combo2.setStyleSheet(u"background-color: #2c2f4a; padding: 5px;")
-        self.btn_detect = QPushButton(self.R_image)
-        self.btn_detect.setObjectName(u"btn_detect")
+        self.combo2.setFixedSize(150, 30)
+        self.combo2.setStyleSheet("""
+            QComboBox {
+                background-color: #ffffff;
+                color: black;
+                border: 2px solid #5a6ea8;
+                border-radius: 5px;
+                padding: 5px;
+            }
+        """)
+
+        # 检测按钮
+        self.btn_detect = QPushButton("开始检测")
         self.btn_detect.setIcon(QIcon(":/icons/images/icons/cil-media-play.png"))
-        self.btn_detect.setText("开始检测")
-        self.btn_detect.setMinimumHeight(30)
-        self.btn_detect.setStyleSheet(u"background-color: #ff79c6; padding: 5px; color: black;")
-        self.controlLayout.addWidget(self.combo1)
-        self.controlLayout.addWidget(self.combo2)
-        self.controlLayout.addWidget(self.btn_detect)
-        self.verticalLayout_R_image.addLayout(self.controlLayout)
+        self.btn_detect.setCursor(QCursor(Qt.PointingHandCursor))
+        self.btn_detect.setFixedSize(110, 30)
+        self.btn_detect.setStyleSheet("""
+            QPushButton {
+                background-color: #28a745;
+                color: white;
+                border: none;
+                border-radius: 4px;
+                padding: 5px 10px;
+            }
+            QPushButton:hover {
+                background-color: #218838;
+            }
+        """)
 
-        # ========== 图片对比显示框 ==========
-        self.compare_frame = QLabel(self.R_image)
-        self.compare_frame.setObjectName(u"compare_frame")
-        self.compare_frame.setAlignment(Qt.AlignCenter)
-        self.compare_frame.setMinimumHeight(400)
-        self.compare_frame.setStyleSheet(u"background-color: #44475a; border: 1px solid #6272a4;")
-        self.compare_frame.setText("加载图像后显示对比效果")
-        self.verticalLayout_R_image.addWidget(self.compare_frame)
+        # 添加控件到布局
+        self.horizontalLayout_10.addWidget(self.combo1)
+        self.horizontalLayout_10.addWidget(self.combo2)
+        self.horizontalLayout_10.addStretch()  # 弹性空间：按钮靠右
+        self.horizontalLayout_10.addWidget(self.btn_detect)
 
+        # 添加 row_2 到页面主布局
+        self.verticalLayout_R_image.addWidget(self.row_2)
+
+        # ========================= row_3 图像对比区域 =========================
+        self.row_3 = QFrame(self.R_image)
+        self.row_3.setMinimumHeight(400)
+        self.row_3.setFrameShape(QFrame.StyledPanel)
+        self.row_3.setFrameShadow(QFrame.Raised)
+        self.verticalLayout_30 = QVBoxLayout(self.row_3)
+        self.verticalLayout_30.setContentsMargins(0, 0, 0, 0)
+        self.verticalLayout_30.setSpacing(0)
+
+        self.splitter = QSplitter(Qt.Horizontal)
+        self.splitter.setHandleWidth(2)
+        self.splitter.setStyleSheet("QSplitter::handle { background-color: orange; }")
+
+        self.label_after = QLabel("恢复后图像")
+        self.label_after.setAlignment(Qt.AlignCenter)
+        self.label_after.setStyleSheet("background-color: white; border: 1px solid #007BFF;")
+
+        self.label_before = QLabel("恢复前图像")
+        self.label_before.setAlignment(Qt.AlignCenter)
+        self.label_before.setStyleSheet("background-color: white; border: 1px solid #007BFF;")
+
+        self.splitter.addWidget(self.label_after)
+        self.splitter.addWidget(self.label_before)
+        self.splitter.setSizes([7, 3])  # 初始比例 70%:30%
+
+        self.verticalLayout_30.addWidget(self.splitter)
+        self.verticalLayout_R_image.addWidget(self.row_3)
+
+        # 添加该页面到 stackedWidget
         self.stackedWidget.addWidget(self.R_image)
-
-
-
 
         self.verticalLayout_15.addWidget(self.stackedWidget)
 
