@@ -2,7 +2,13 @@
 import sys
 import os
 import platform
-
+import shutil
+from datetime import datetime
+from PySide6.QtWidgets import QFileDialog
+sys.path.append(os.path.join(os.path.dirname(__file__), "code1_ALL", "Denoise", "MPMF-Net-master"))
+from utils import generate_result_image_path
+from run_model import run_all_in_one_restore
+from PySide6.QtGui import QPixmap
 
 from modules import *
 from widgets import *
@@ -56,7 +62,7 @@ class MainWindow(QMainWindow):
         widgets.btn_image.clicked.connect(self.buttonClick)
         widgets.btn_video.clicked.connect(self.buttonClick)
         widgets.btn_widgets.clicked.connect(self.buttonClick)
-
+        widgets.btn_detect.clicked.connect(self.run_restore_if_needed)
 
         # EXTRA LEFT BOX
         def openCloseLeftBox():
@@ -76,7 +82,7 @@ class MainWindow(QMainWindow):
         # SET CUSTOM THEME
         # ///////////////////////////////////////////////////////////////
         useCustomTheme = True
-        themeFile = "themes\py_dracula_light.qss"
+        themeFile = "themes/py_dracula_light.qss"
 
         # SET THEME AND HACKS
         if useCustomTheme:
@@ -90,8 +96,7 @@ class MainWindow(QMainWindow):
         # ///////////////////////////////////////////////////////////////
         widgets.stackedWidget.setCurrentWidget(widgets.home)
         widgets.btn_home.setStyleSheet(UIFunctions.selectMenu(widgets.btn_home.styleSheet()))
-
-
+        widgets.btn_browse.clicked.connect(self.open_and_save_image)
     # BUTTONS CLICK
     # Post here your functions for clicked buttons
     # ///////////////////////////////////////////////////////////////
@@ -126,6 +131,79 @@ class MainWindow(QMainWindow):
             # widgets.stackedWidget.setCurrentWidget(widgets.video_page)  # 如果你有 video 页面
             UIFunctions.resetStyle(self, btnName)
             btn.setStyleSheet(UIFunctions.selectMenu(btn.styleSheet()))
+
+    # 生成保存路径：带编号 + 日期 + 时间
+    def generate_image_save_path(self):
+        base_dir = os.path.join(os.path.dirname(__file__), "O_picture")
+        if not os.path.exists(base_dir):
+            os.makedirs(base_dir)
+
+        now = datetime.now()
+        date_str = f"{now.month}_{now.day}"
+        time_str = now.strftime("%H%M")
+
+        existing_numbers = []
+        for fname in os.listdir(base_dir):
+            if fname.endswith((".jpg", ".png", ".jpeg")) and fname.count("_") >= 2:
+                num = fname.split("_")[0]
+                if num.isdigit():
+                    existing_numbers.append(int(num))
+        next_index = max(existing_numbers + [0]) + 1
+        filename = f"{next_index}_{date_str}_{time_str}.png"
+        return os.path.join(base_dir, filename)
+
+    # 打开图片并保存到指定路径
+    def open_and_save_image(self):
+        file_path, _ = QFileDialog.getOpenFileName(self, "选择图像", "", "Image Files (*.png *.jpg *.jpeg)")
+        if file_path:
+            save_path = self.generate_image_save_path()
+            shutil.copy(file_path, save_path)
+            print(f"图像已保存到: {save_path}")
+            widgets.lineEdit_path.setText(file_path)
+
+    # 自动检测并执行 ALL-IN-ONE 复原操作
+    def run_restore_if_needed(self):
+        mode = widgets.combo1.currentText()
+        function = widgets.combo2.currentText()
+        input_path = widgets.lineEdit_path.text()
+
+        if not os.path.exists(input_path):
+            print("路径不存在，请选择有效图像")
+            return
+
+        # 显示恢复前图像（原图）
+        pixmap_before = QPixmap(input_path)
+        widgets.label_before.setPixmap(pixmap_before.scaled(
+            widgets.label_before.size(), Qt.KeepAspectRatio))
+
+        # 处理 ALL-IN-ONE + 复原
+        if mode == "ALL-IN-ONE" and function == "复原":
+            output_path = generate_result_image_path()
+            run_all_in_one_restore(input_path, output_path)
+
+            # 显示恢复后图像
+            pixmap_after = QPixmap(output_path)
+            widgets.label_after.setPixmap(pixmap_after.scaled(
+                widgets.label_after.size(), Qt.KeepAspectRatio))
+
+        # 处理 ALL-IN-ONE + 复原+检测
+        elif mode == "ALL-IN-ONE" and function == "复原+检测":
+            # TODO: 这里未来可接入检测算法逻辑
+            widgets.label_after.setText("检测模块尚未集成")
+
+        else:
+            print("未匹配到处理算法")
+    # 让图片适应尺寸
+    def resizeEvent(self, event):
+        super().resizeEvent(event)
+        # 自适应缩放
+        if hasattr(widgets, 'label_before') and hasattr(widgets, 'label_after'):
+            before_pixmap = widgets.label_before.pixmap()
+            after_pixmap = widgets.label_after.pixmap()
+            if before_pixmap:
+                widgets.label_before.setPixmap(before_pixmap.scaled(widgets.label_before.size(), Qt.KeepAspectRatio))
+            if after_pixmap:
+                widgets.label_after.setPixmap(after_pixmap.scaled(widgets.label_after.size(), Qt.KeepAspectRatio))
 
     # RESIZE EVENTS
     # ///////////////////////////////////////////////////////////////
