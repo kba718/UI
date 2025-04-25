@@ -9,7 +9,7 @@ sys.path.append(os.path.join(os.path.dirname(__file__), "code1_ALL", "Denoise", 
 from utils import generate_result_image_path
 from run_model import run_all_in_one_restore
 from PySide6.QtGui import QPixmap
-
+from slide_compare_widget import SlideCompareWidget
 from modules import *
 from widgets import *
 os.environ["QT_FONT_DPI"] = "96" # FIX Problem for High DPI and Scale above 100%
@@ -161,7 +161,6 @@ class MainWindow(QMainWindow):
             print(f"图像已保存到: {save_path}")
             widgets.lineEdit_path.setText(file_path)
 
-    # 自动检测并执行 ALL-IN-ONE 复原操作
     def run_restore_if_needed(self):
         mode = widgets.combo1.currentText()
         function = widgets.combo2.currentText()
@@ -171,28 +170,23 @@ class MainWindow(QMainWindow):
             print("路径不存在，请选择有效图像")
             return
 
-        # 显示恢复前图像（原图）
-        pixmap_before = QPixmap(input_path)
-        widgets.label_before.setPixmap(pixmap_before.scaled(
-            widgets.label_before.size(), Qt.KeepAspectRatio))
-
-        # 处理 ALL-IN-ONE + 复原
         if mode == "ALL-IN-ONE" and function == "复原":
             output_path = generate_result_image_path()
             run_all_in_one_restore(input_path, output_path)
 
-            # 显示恢复后图像
+            # 创建 QPixmap 对象
+            pixmap_before = QPixmap(input_path)
             pixmap_after = QPixmap(output_path)
-            widgets.label_after.setPixmap(pixmap_after.scaled(
-                widgets.label_after.size(), Qt.KeepAspectRatio))
 
-        # 处理 ALL-IN-ONE + 复原+检测
+            widgets.slide_compare.setImages(input_path, output_path)
+
         elif mode == "ALL-IN-ONE" and function == "复原+检测":
-            # TODO: 这里未来可接入检测算法逻辑
-            widgets.label_after.setText("检测模块尚未集成")
-
+            widgets.compare_widget.clear()
+            widgets.compare_widget.setText("检测模块尚未集成")
         else:
             print("未匹配到处理算法")
+
+
     # 让图片适应尺寸
     def resizeEvent(self, event):
         super().resizeEvent(event)

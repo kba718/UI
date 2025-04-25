@@ -3,7 +3,7 @@
 from PySide6.QtCore import *
 from PySide6.QtGui import *
 from PySide6.QtWidgets import *
-
+from slide_compare_widget import SlideCompareWidget
 from . resources_rc import *
 
 class Ui_MainWindow(object):
@@ -1527,7 +1527,9 @@ class Ui_MainWindow(object):
             "background-color: #5a6ea8; color: white; border-radius: 5px; padding: 6px 12px; border: none;")
         self.gridLayout.addWidget(self.btn_browse, 0, 1, 1, 1)
         # 说明文字
-        self.label_description = QLabel("选择所需的图像恢复与检测算法组合，点击‘开始检测’按钮后，即可执行图像复原或复原+检测流程。", self.frame_content_wid_1)
+        self.label_description = QLabel("选择算法  →  开始检测  →  执行操作"
+                                     "      （左侧：复原后图像 右侧：复原前图像）", self.frame_content_wid_1)
+
         self.label_description.setStyleSheet("color: #6a7ba8; font-size: 9pt;")
         self.gridLayout.addWidget(self.label_description, 1, 0, 1, 2)
 
@@ -1607,30 +1609,19 @@ class Ui_MainWindow(object):
         self.row_3.setMinimumHeight(400)
         self.row_3.setFrameShape(QFrame.StyledPanel)
         self.row_3.setFrameShadow(QFrame.Raised)
+
         self.verticalLayout_30 = QVBoxLayout(self.row_3)
         self.verticalLayout_30.setContentsMargins(0, 0, 0, 0)
         self.verticalLayout_30.setSpacing(0)
 
-        self.splitter = QSplitter(Qt.Horizontal)
-        self.splitter.setHandleWidth(2)
-        self.splitter.setStyleSheet("QSplitter::handle { background-color: orange; }")
+        # 创建滑动对比组件
+        self.slide_compare = SlideCompareWidget(self.row_3)  # 这里注意名字，最好叫 slide_compare（保持和 main.py 一致）
+        self.verticalLayout_30.addWidget(self.slide_compare)
 
-        self.label_after = QLabel("恢复后图像")
-        self.label_after.setAlignment(Qt.AlignCenter)
-        self.label_after.setStyleSheet("background-color: white; border: 1px solid #007BFF;")
-
-        self.label_before = QLabel("恢复前图像")
-        self.label_before.setAlignment(Qt.AlignCenter)
-        self.label_before.setStyleSheet("background-color: white; border: 1px solid #007BFF;")
-
-        self.splitter.addWidget(self.label_after)
-        self.splitter.addWidget(self.label_before)
-        self.splitter.setSizes([7, 3])  # 初始比例 70%:30%
-
-        self.verticalLayout_30.addWidget(self.splitter)
+        # 把 row_3 加到页面
         self.verticalLayout_R_image.addWidget(self.row_3)
 
-        # 添加该页面到 stackedWidget
+        # 把页面加到 stackedWidget
         self.stackedWidget.addWidget(self.R_image)
 
         self.verticalLayout_15.addWidget(self.stackedWidget)
