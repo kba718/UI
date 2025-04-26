@@ -17,7 +17,7 @@ class Ui_MainWindow(object):
         font = QFont()
         font.setFamily(u"Segoe UI")
         font.setPointSize(10)
-        font.setBold(False)
+        font.setBold(True)
         font.setItalic(False)
         self.styleSheet.setFont(font)
         self.styleSheet.setStyleSheet(u"/* /////////////////////////////////////////////////////////////////////////////////////////////////\n"
@@ -596,8 +596,8 @@ class Ui_MainWindow(object):
         self.titleLeftApp.setGeometry(QRect(70, 8, 160, 20))  # 设置应用标题的位置和大小
         font1 = QFont()  # 创建字体对象
         font1.setFamily(u"Segoe UI Semibold")  # 设置字体为Segoe UI Semibold
-        font1.setPointSize(12)  # 设置字体大小为12
-        font1.setBold(False)  # 设置字体非加粗
+        font1.setPointSize(14)
+        font1.setBold(True)  # 设置字体非加粗
         font1.setItalic(False)  # 设置字体非斜体
         self.titleLeftApp.setFont(font1)  # 应用字体设置
         self.titleLeftApp.setAlignment(Qt.AlignLeading | Qt.AlignLeft | Qt.AlignTop)  # 设置文本对齐方式为左对齐、顶部对齐
@@ -609,8 +609,8 @@ class Ui_MainWindow(object):
         self.titleLeftDescription.setMaximumSize(QSize(16777215, 16))  # 设置应用描述的最大高度为16
         font2 = QFont()  # 创建字体对象
         font2.setFamily(u"Segoe UI")  # 设置字体为Segoe UI
-        font2.setPointSize(8)  # 设置字体大小为8
-        font2.setBold(False)  # 设置字体非加粗
+        font2.setPointSize(8)
+        font2.setBold(True)  # 设置字体非加粗
         font2.setItalic(False)  # 设置字体非斜体
         self.titleLeftDescription.setFont(font2)  # 应用字体设置
         self.titleLeftDescription.setAlignment(Qt.AlignLeading | Qt.AlignLeft | Qt.AlignTop)  # 设置文本对齐方式为左对齐、顶部对齐
@@ -1041,8 +1041,8 @@ class Ui_MainWindow(object):
         self.maximizeRestoreAppBtn.setMaximumSize(QSize(28, 28))
         font3 = QFont()
         font3.setFamily(u"Segoe UI")
-        font3.setPointSize(10)
-        font3.setBold(False)
+        font3.setPointSize(12)
+        font3.setBold(True)
         font3.setItalic(False)
         font3.setStyleStrategy(QFont.PreferDefault)
         self.maximizeRestoreAppBtn.setFont(font3)
@@ -1513,13 +1513,13 @@ class Ui_MainWindow(object):
         self.gridLayout.setContentsMargins(-1, -1, -1, 0)
         # 路径输入框
         self.lineEdit_path = QLineEdit(self.frame_content_wid_1)
-        self.lineEdit_path.setPlaceholderText("Type here")
+        self.lineEdit_path.setPlaceholderText("请选择图像文件路径...")
         self.lineEdit_path.setMinimumSize(QSize(0, 30))
         self.lineEdit_path.setStyleSheet(
             "background-color: #5a6ea8; color: white; border-radius: 5px; padding: 6px; border: none;")
         self.gridLayout.addWidget(self.lineEdit_path, 0, 0, 1, 1)
         # 选择文件按钮
-        self.btn_browse = QPushButton("Open", self.frame_content_wid_1)
+        self.btn_browse = QPushButton("选择图片", self.frame_content_wid_1)
         self.btn_browse.setIcon(QIcon(":/icons/images/icons/cil-folder-open.png"))
         self.btn_browse.setMinimumSize(QSize(150, 30))
         self.btn_browse.setCursor(QCursor(Qt.PointingHandCursor))
@@ -1726,7 +1726,7 @@ class Ui_MainWindow(object):
         self.creditsLabel.setMaximumSize(QSize(16777215, 16))
         font5 = QFont()
         font5.setFamily(u"Segoe UI")
-        font5.setBold(False)
+        font5.setBold(True)
         font5.setItalic(False)
         self.creditsLabel.setFont(font5)
         self.creditsLabel.setAlignment(Qt.AlignLeading|Qt.AlignLeft|Qt.AlignVCenter)
@@ -1772,8 +1772,8 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"MainWindow", None))
-        self.titleLeftApp.setText(QCoreApplication.translate("MainWindow", u"PyDracula", None))
-        self.titleLeftDescription.setText(QCoreApplication.translate("MainWindow", u"Modern GUI / Flat Style", None))
+        self.titleLeftApp.setText(QCoreApplication.translate("MainWindow", u"火 眼 金 睛 🔥", None))
+        self.titleLeftDescription.setText(QCoreApplication.translate("MainWindow", u"我们的队伍 © 2025", None))
         self.toggleButton.setText(QCoreApplication.translate("MainWindow", u"展开", None))
         self.btn_home.setText(QCoreApplication.translate("MainWindow", u"主页", None))
         self.btn_save.setText(QCoreApplication.translate("MainWindow", u"历史数据", None))
@@ -1781,11 +1781,11 @@ class Ui_MainWindow(object):
         self.btn_video.setText(QCoreApplication.translate("MainWindow", u"视频处理", None))
         self.btn_widgets.setText(QCoreApplication.translate("MainWindow", u"Widgets", None))
 
-        self.btn_exit.setText(QCoreApplication.translate("MainWindow", u"Exit", None))
-        self.toggleLeftBox.setText(QCoreApplication.translate("MainWindow", u"Left Box", None))
-        self.extraLabel.setText(QCoreApplication.translate("MainWindow", u"Left Box", None))
+        self.btn_exit.setText(QCoreApplication.translate("MainWindow", u"退出", None))
+        self.toggleLeftBox.setText(QCoreApplication.translate("MainWindow", u"侧边栏", None))
+        self.extraLabel.setText(QCoreApplication.translate("MainWindow", u"侧边栏", None))
 #if QT_CONFIG(tooltip)
-        self.extraCloseColumnBtn.setToolTip(QCoreApplication.translate("MainWindow", u"Close left box", None))
+        self.extraCloseColumnBtn.setToolTip(QCoreApplication.translate("MainWindow", u"关闭侧边栏", None))
 #endif // QT_CONFIG(tooltip)
         self.extraCloseColumnBtn.setText("")
         self.btn_share.setText(QCoreApplication.translate("MainWindow", u"Share", None))
@@ -1805,7 +1805,7 @@ class Ui_MainWindow(object):
 "<p align=\"center\" style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:12pt; font-weight:600; color:#ff79c6;\">Convert QRC</span></p>\n"
 "<p align=\"center\" "
                         "style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:9pt; color:#ffffff;\">pyside6-rcc resources.qrc -o resources_rc.py</span></p></body></html>", None))
-        self.titleRightInfo.setText(QCoreApplication.translate("MainWindow", u"PyDracula APP - Theme with colors based on Dracula for Python.", None))
+        self.titleRightInfo.setText(QCoreApplication.translate("MainWindow", u"面向智能驾驶的恶劣天气图像复原与检测系统", None))
 #if QT_CONFIG(tooltip)
         self.settingsTopBtn.setToolTip(QCoreApplication.translate("MainWindow", u"Settings", None))
 #endif // QT_CONFIG(tooltip)
@@ -1892,7 +1892,7 @@ class Ui_MainWindow(object):
         self.btn_message.setText(QCoreApplication.translate("MainWindow", u"Message", None))
         self.btn_print.setText(QCoreApplication.translate("MainWindow", u"Print", None))
         self.btn_logout.setText(QCoreApplication.translate("MainWindow", u"Logout", None))
-        self.creditsLabel.setText(QCoreApplication.translate("MainWindow", u"By: Wanderson M. Pimenta", None))
-        self.version.setText(QCoreApplication.translate("MainWindow", u"v1.0.3", None))
+        self.creditsLabel.setText(QCoreApplication.translate("MainWindow", u"制作人： 我们的队伍！", None))
+        self.version.setText(QCoreApplication.translate("MainWindow", u"v1.0.0", None))
     # retranslateUi
 
