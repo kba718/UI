@@ -12,6 +12,7 @@ from PySide6.QtGui import QPixmap
 from slide_compare_widget import SlideCompareWidget
 from modules import *
 from widgets import *
+from generate_heatmap import generate_and_save_heatmaps
 os.environ["QT_FONT_DPI"] = "96" # FIX Problem for High DPI and Scale above 100%
 
 # SET AS GLOBAL WIDGETS
@@ -21,7 +22,6 @@ widgets = None
 class MainWindow(QMainWindow):
     def __init__(self):
         QMainWindow.__init__(self)
-
         # SET AS GLOBAL WIDGETS
         # ///////////////////////////////////////////////////////////////
         self.ui = Ui_MainWindow()
@@ -63,7 +63,7 @@ class MainWindow(QMainWindow):
         widgets.btn_video.clicked.connect(self.buttonClick)
         widgets.btn_widgets.clicked.connect(self.buttonClick)
         widgets.btn_detect.clicked.connect(self.run_restore_if_needed)
-
+        widgets.btn_heatmap.clicked.connect(self.show_heatmap_comparison)
         # EXTRA LEFT BOX
         def openCloseLeftBox():
             UIFunctions.toggleLeftBox(self, True)
@@ -128,7 +128,7 @@ class MainWindow(QMainWindow):
 
         if btnName == "btn_video":
             print("打开视频页面")
-            # widgets.stackedWidget.setCurrentWidget(widgets.video_page)  # 如果你有 video 页面
+            widgets.stackedWidget.setCurrentWidget(widgets.R_movie)  # 如果你有 video 页面
             UIFunctions.resetStyle(self, btnName)
             btn.setStyleSheet(UIFunctions.selectMenu(btn.styleSheet()))
 
@@ -152,33 +152,38 @@ class MainWindow(QMainWindow):
         filename = f"{next_index}_{date_str}_{time_str}.png"
         return os.path.join(base_dir, filename)
 
-    # 打开图片并保存到指定路径
+    # 打开图片
     def open_and_save_image(self):
         file_path, _ = QFileDialog.getOpenFileName(self, "选择图像", "", "Image Files (*.png *.jpg *.jpeg)")
         if file_path:
-            save_path = self.generate_image_save_path()
-            shutil.copy(file_path, save_path)
-            print(f"图像已保存到: {save_path}")
-            widgets.lineEdit_path.setText(file_path)
+            widgets.lineEdit_path.setText(file_path)  # 注意，只设置输入框，不保存！
+            self.selected_input_path = file_path  # 保存一下选中的原图路径
 
     def run_restore_if_needed(self):
         mode = widgets.combo1.currentText()
         function = widgets.combo2.currentText()
-        input_path = widgets.lineEdit_path.text()
+        input_path = self.selected_input_path  # 用选中的原图路径
 
-        if not os.path.exists(input_path):
+        if not input_path or not os.path.exists(input_path):
             print("路径不存在，请选择有效图像")
             return
 
         if mode == "ALL-IN-ONE" and function == "复原":
+            # 开始保存原图副本
+            save_path = self.generate_image_save_path()
+            shutil.copy(input_path, save_path)
+            print(f"原图已标准保存到: {save_path}")
+
+            # 基于标准保存的图生成复原图
             output_path = generate_result_image_path()
-            run_all_in_one_restore(input_path, output_path)
+            run_all_in_one_restore(save_path, output_path)
 
-            # 创建 QPixmap 对象
-            pixmap_before = QPixmap(input_path)
-            pixmap_after = QPixmap(output_path)
+            # 更新滑动对比界面
+            widgets.slide_compare.setImages(save_path, output_path)
 
-            widgets.slide_compare.setImages(input_path, output_path)
+            # 记录保存的标准图路径和复原图路径
+            self.current_save_path = save_path
+            self.current_output_path = output_path
 
         elif mode == "ALL-IN-ONE" and function == "复原+检测":
             widgets.compare_widget.clear()
@@ -186,6 +191,31 @@ class MainWindow(QMainWindow):
         else:
             print("未匹配到处理算法")
 
+    # 展示热力图
+    def show_heatmap_comparison(self):
+        try:
+            before_path = self.current_save_path
+            after_path = self.current_output_path
+
+            if not before_path or not after_path:
+                print("没有检测结果，无法生成热力图")
+                return
+         # 打印标准保存的前后路径
+            print(f"生成热力图的原图路径: {before_path}")
+            print(f"生成热力图的复原图路径: {after_path}")
+            base_dir = os.path.dirname(__file__)
+            h_o_picture_dir = os.path.join(base_dir, "H_O_picture")
+            h_r_picture_dir = os.path.join(base_dir, "H_R_picture")
+
+            heatmap_before, heatmap_after = generate_and_save_heatmaps(
+                before_path, after_path, h_o_picture_dir, h_r_picture_dir
+            )
+
+            widgets.slide_compare.setImages(heatmap_before, heatmap_after)
+            print("成功生成并展示热力图")
+
+        except Exception as e:
+            print(f"生成热力图失败: {e}")
 
     # 让图片适应尺寸
     def resizeEvent(self, event):

@@ -14,6 +14,9 @@ class SlideCompareWidget(QWidget):
         self.setMinimumHeight(400)
 
     def setImages(self, before_path, after_path):
+        # 保存路径给热力图 做输入
+        self.before_path = before_path
+        self.after_path = after_path
         self.before_pixmap = QPixmap(before_path)
         self.after_pixmap = QPixmap(after_path)
         self.update()

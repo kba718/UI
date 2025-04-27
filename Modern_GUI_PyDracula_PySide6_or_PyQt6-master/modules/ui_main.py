@@ -5,6 +5,8 @@ from PySide6.QtGui import *
 from PySide6.QtWidgets import *
 from slide_compare_widget import SlideCompareWidget
 from . resources_rc import *
+from video_compare_widget import VideoCompareWidget
+
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -1577,6 +1579,24 @@ class Ui_MainWindow(object):
             }
         """)
 
+        # 先加一个 热力图按钮
+        self.btn_heatmap = QPushButton("热力图")
+        self.btn_heatmap.setIcon(QIcon(":/icons/images/icons/cil-fire.png"))
+        self.btn_heatmap.setCursor(QCursor(Qt.PointingHandCursor))
+        self.btn_heatmap.setFixedSize(110, 30)
+        self.btn_heatmap.setStyleSheet("""
+            QPushButton {
+                background-color: #ff5722;
+                color: white;
+                border: none;
+                border-radius: 4px;
+                padding: 5px 10px;
+            }
+            QPushButton:hover {
+                background-color: #e64a19;
+            }
+        """)
+
         # 检测按钮
         self.btn_detect = QPushButton("开始检测")
         self.btn_detect.setIcon(QIcon(":/icons/images/icons/cil-media-play.png"))
@@ -1600,6 +1620,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout_10.addWidget(self.combo2)
         self.horizontalLayout_10.addStretch()  # 弹性空间：按钮靠右
         self.horizontalLayout_10.addWidget(self.btn_detect)
+        self.horizontalLayout_10.addWidget(self.btn_heatmap)
 
         # 添加 row_2 到页面主布局
         self.verticalLayout_R_image.addWidget(self.row_2)
@@ -1620,9 +1641,160 @@ class Ui_MainWindow(object):
 
         # 把 row_3 加到页面
         self.verticalLayout_R_image.addWidget(self.row_3)
-
         # 把页面加到 stackedWidget
         self.stackedWidget.addWidget(self.R_image)
+
+
+
+        # 创建视频处理页面 R_movie
+        self.R_movie = QWidget()
+        self.R_movie.setObjectName("R_movie")
+        self.R_movie.setStyleSheet("background-color: white;")
+        self.verticalLayout_R_movie = QVBoxLayout(self.R_movie)
+        self.verticalLayout_R_movie.setContentsMargins(10, 10, 10, 10)
+        self.verticalLayout_R_movie.setSpacing(0)
+
+        # ========================= row_1 文件选择 =========================
+        self.row_1_movie = QFrame(self.R_movie)
+        self.row_1_movie.setMinimumHeight(100)
+        self.row_1_movie.setMaximumHeight(100)
+        self.row_1_movie.setFrameShape(QFrame.StyledPanel)
+        self.row_1_movie.setFrameShadow(QFrame.Raised)
+        self.verticalLayout_row1_movie = QVBoxLayout(self.row_1_movie)
+        self.verticalLayout_row1_movie.setSpacing(0)
+        self.verticalLayout_row1_movie.setContentsMargins(0, 0, 0, 0)
+
+        # 复用选择路径和按钮（跟R_image的一样）
+        self.frame_div_content_1_movie = QFrame(self.row_1_movie)
+        self.frame_div_content_1_movie.setFrameShape(QFrame.NoFrame)
+        self.frame_div_content_1_movie.setFrameShadow(QFrame.Raised)
+        self.verticalLayout_frame_div_movie = QVBoxLayout(self.frame_div_content_1_movie)
+        self.verticalLayout_frame_div_movie.setSpacing(0)
+        self.verticalLayout_frame_div_movie.setContentsMargins(0, 0, 0, 0)
+
+        self.frame_content_wid_1_movie = QFrame(self.frame_div_content_1_movie)
+        self.frame_content_wid_1_movie.setFrameShape(QFrame.NoFrame)
+        self.frame_content_wid_1_movie.setFrameShadow(QFrame.Raised)
+        self.horizontalLayout_content_movie = QHBoxLayout(self.frame_content_wid_1_movie)
+        self.gridLayout_movie = QGridLayout()
+        self.gridLayout_movie.setContentsMargins(-1, -1, -1, 0)
+
+        # 路径输入框
+        self.lineEdit_path_movie = QLineEdit(self.frame_content_wid_1_movie)
+        self.lineEdit_path_movie.setPlaceholderText("请选择视频文件路径...")
+        self.lineEdit_path_movie.setMinimumSize(QSize(0, 30))
+        self.lineEdit_path_movie.setStyleSheet(
+            "background-color: #5a6ea8; color: white; border-radius: 5px; padding: 6px; border: none;")
+        self.gridLayout_movie.addWidget(self.lineEdit_path_movie, 0, 0, 1, 1)
+
+        # 选择文件按钮
+        self.btn_browse_movie = QPushButton("选择视频", self.frame_content_wid_1_movie)
+        self.btn_browse_movie.setIcon(QIcon(":/icons/images/icons/cil-folder-open.png"))
+        self.btn_browse_movie.setMinimumSize(QSize(150, 30))
+        self.btn_browse_movie.setCursor(QCursor(Qt.PointingHandCursor))
+        self.btn_browse_movie.setStyleSheet(
+            "background-color: #5a6ea8; color: white; border-radius: 5px; padding: 6px 12px; border: none;")
+        self.gridLayout_movie.addWidget(self.btn_browse_movie, 0, 1, 1, 1)
+
+        # 说明文字
+        self.label_description_movie = QLabel("选择算法  →  开始检测  →  执行操作"
+                                              "      （左侧：复原后视频 右侧：原始视频）", self.frame_content_wid_1_movie)
+        self.label_description_movie.setStyleSheet("color: #6a7ba8; font-size: 9pt;")
+        self.gridLayout_movie.addWidget(self.label_description_movie, 1, 0, 1, 2)
+
+        self.horizontalLayout_content_movie.addLayout(self.gridLayout_movie)
+        self.verticalLayout_frame_div_movie.addWidget(self.frame_content_wid_1_movie)
+        self.verticalLayout_row1_movie.addWidget(self.frame_div_content_1_movie)
+        self.verticalLayout_R_movie.addWidget(self.row_1_movie)
+
+        # ========================= row_2 控制栏 =========================
+        self.row_2_movie = QFrame(self.R_movie)
+        self.row_2_movie.setMinimumHeight(30)
+        self.row_2_movie.setMaximumHeight(40)
+        self.row_2_movie.setFrameShape(QFrame.StyledPanel)
+        self.row_2_movie.setFrameShadow(QFrame.Raised)
+
+        self.horizontalLayout_controls_movie = QHBoxLayout(self.row_2_movie)
+        self.horizontalLayout_controls_movie.setContentsMargins(0, 0, 10, 0)
+        self.horizontalLayout_controls_movie.setSpacing(10)
+
+        # 模式选择下拉框
+        self.combo1_movie = QComboBox()
+        self.combo1_movie.addItems(["去雨", "去雾", "低光增强", "ALL-IN-ONE"])
+        self.combo1_movie.setFixedSize(150, 30)
+        self.combo1_movie.setStyleSheet("""
+            QComboBox {
+                background-color: #ffffff;
+                color: black;
+                border: 2px solid #5a6ea8;
+                border-radius: 5px;
+                padding: 5px;
+            }
+        """)
+
+        # 功能选择下拉框
+        self.combo2_movie = QComboBox()
+        self.combo2_movie.addItems(["复原", "复原+检测"])
+        self.combo2_movie.setFixedSize(150, 30)
+        self.combo2_movie.setStyleSheet("""
+            QComboBox {
+                background-color: #ffffff;
+                color: black;
+                border: 2px solid #5a6ea8;
+                border-radius: 5px;
+                padding: 5px;
+            }
+        """)
+
+        # 检测按钮
+        self.btn_detect_movie = QPushButton("开始检测")
+        self.btn_detect_movie.setIcon(QIcon(":/icons/images/icons/cil-media-play.png"))
+        self.btn_detect_movie.setCursor(QCursor(Qt.PointingHandCursor))
+        self.btn_detect_movie.setFixedSize(110, 30)
+        self.btn_detect_movie.setStyleSheet("""
+            QPushButton {
+                background-color: #28a745;
+                color: white;
+                border: none;
+                border-radius: 4px;
+                padding: 5px 10px;
+            }
+            QPushButton:hover {
+                background-color: #218838;
+            }
+        """)
+
+        # 加入布局
+        self.horizontalLayout_controls_movie.addWidget(self.combo1_movie)
+        self.horizontalLayout_controls_movie.addWidget(self.combo2_movie)
+        self.horizontalLayout_controls_movie.addStretch()
+        self.horizontalLayout_controls_movie.addWidget(self.btn_detect_movie)
+
+        # 加入到页面
+        self.verticalLayout_R_movie.addWidget(self.row_2_movie)
+
+        # ========================= row_3 视频对比播放区域 =========================
+        # row_3 视频对比播放区域
+        self.row_3_movie = QFrame(self.R_movie)
+        self.row_3_movie.setMinimumHeight(400)
+        self.row_3_movie.setFrameShape(QFrame.StyledPanel)
+        self.row_3_movie.setFrameShadow(QFrame.Raised)
+
+        self.horizontalLayout_video_compare = QHBoxLayout(self.row_3_movie)
+        self.horizontalLayout_video_compare.setContentsMargins(0, 0, 0, 0)
+        self.horizontalLayout_video_compare.setSpacing(0)
+
+        # 添加视频对比组件
+        self.video_compare_widget = VideoCompareWidget(self.row_3_movie)
+        self.horizontalLayout_video_compare.addWidget(self.video_compare_widget)
+
+        # 把 row_3 加到整个页面布局
+        self.verticalLayout_R_movie.addWidget(self.row_3_movie)
+
+        # 最后！把整个R_movie页面注册到stackedWidget
+        self.stackedWidget.addWidget(self.R_movie)
+
+
 
         self.verticalLayout_15.addWidget(self.stackedWidget)
 
