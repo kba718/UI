@@ -13,6 +13,7 @@ from slide_compare_widget import SlideCompareWidget
 from modules import *
 from widgets import *
 from generate_heatmap import generate_and_save_heatmaps
+from QuantitativeAnalysisDialog import QuantitativeAnalysisDialog
 os.environ["QT_FONT_DPI"] = "96" # FIX Problem for High DPI and Scale above 100%
 
 # SET AS GLOBAL WIDGETS
@@ -36,7 +37,7 @@ class MainWindow(QMainWindow):
         # APP NAME
         # ///////////////////////////////////////////////////////////////
         title = "火 眼 金 睛"
-        description = "面向智能驾驶的恶劣天气图像复原与检测系统"
+        description = "面向智能驾驶的恶劣天气场景复原与检测系统"
         # APPLY TEXTS
         self.setWindowTitle(title)
         widgets.titleRightInfo.setText(description)
@@ -64,6 +65,7 @@ class MainWindow(QMainWindow):
         widgets.btn_widgets.clicked.connect(self.buttonClick)
         widgets.btn_detect.clicked.connect(self.run_restore_if_needed)
         widgets.btn_heatmap.clicked.connect(self.show_heatmap_comparison)
+        widgets.btn_psnr.clicked.connect(self.show_quantitative_analysis_dialog)
         # EXTRA LEFT BOX
         def openCloseLeftBox():
             UIFunctions.toggleLeftBox(self, True)
@@ -131,7 +133,21 @@ class MainWindow(QMainWindow):
             widgets.stackedWidget.setCurrentWidget(widgets.R_movie)  # 如果你有 video 页面
             UIFunctions.resetStyle(self, btnName)
             btn.setStyleSheet(UIFunctions.selectMenu(btn.styleSheet()))
-
+        # #     # 需要删除
+        #     left_video_path = "D:/MTM/wen/original/all.mp4"
+        #     right_video_path = "D:/MTM/wen/restore/restored_fixed_duration.mp4"
+        # if os.path.exists(left_video_path) and os.path.exists(right_video_path):
+        #     widgets.video_compare_widget.load_videos(left_video_path, right_video_path)
+        #     print("固定路径下视频加载成功，准备播放！")
+        #     widgets.video_compare_widget.toggle_play()
+        # else:
+        #     print("找不到固定路径下的视频，请检查路径！")
+        #
+        # if btnName == "btn_psnr":
+        #     print("打开定量分析弹窗")
+        #     # 创建并显示定量分析弹窗
+        #     psnr_dialog = QuantitativeAnalysisDialog(self)
+        #     psnr_dialog.exec_()  # 显示弹窗并等待关闭
     # 生成保存路径：带编号 + 日期 + 时间
     def generate_image_save_path(self):
         base_dir = os.path.join(os.path.dirname(__file__), "O_picture")
@@ -217,6 +233,33 @@ class MainWindow(QMainWindow):
         except Exception as e:
             print(f"生成热力图失败: {e}")
 
+    def show_quantitative_analysis_dialog(self):
+        print("打开定量分析弹窗")
+
+        # 获取当前的复原前和复原后图像路径
+        input_path = self.current_save_path
+        output_path = self.current_output_path
+
+        # 确保路径有效
+        if not input_path or not os.path.exists(input_path):
+            print("原始图像路径无效！")
+            return
+        if not output_path or not os.path.exists(output_path):
+            print("复原图路径无效！")
+            return
+
+        # 设置路径并创建定量分析对话框
+        psnr_dialog = QuantitativeAnalysisDialog(self)
+
+        # 调用 set_image_paths 方法传递路径
+        psnr_dialog.set_image_paths(input_path, output_path)  # 设置复原前和复原后图像路径
+
+        # 打印路径以调试
+        print(f"输入路径: {input_path}")
+        print(f"输出路径: {output_path}")
+
+        # 打开对话框
+        psnr_dialog.exec()  # 弹出对话框并等待用户关闭
     # 让图片适应尺寸
     def resizeEvent(self, event):
         super().resizeEvent(event)

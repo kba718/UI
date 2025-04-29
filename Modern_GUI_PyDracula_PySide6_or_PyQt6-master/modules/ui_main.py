@@ -1579,23 +1579,7 @@ class Ui_MainWindow(object):
             }
         """)
 
-        # 先加一个 热力图按钮
-        self.btn_heatmap = QPushButton("热力图")
-        self.btn_heatmap.setIcon(QIcon(":/icons/images/icons/cil-fire.png"))
-        self.btn_heatmap.setCursor(QCursor(Qt.PointingHandCursor))
-        self.btn_heatmap.setFixedSize(110, 30)
-        self.btn_heatmap.setStyleSheet("""
-            QPushButton {
-                background-color: #ff5722;
-                color: white;
-                border: none;
-                border-radius: 4px;
-                padding: 5px 10px;
-            }
-            QPushButton:hover {
-                background-color: #e64a19;
-            }
-        """)
+
 
         # 检测按钮
         self.btn_detect = QPushButton("开始检测")
@@ -1615,12 +1599,49 @@ class Ui_MainWindow(object):
             }
         """)
 
+        # 热力图按钮
+        self.btn_heatmap = QPushButton("热力图")
+        self.btn_heatmap.setIcon(QIcon(":/icons/images/icons/cil-fire.png"))
+        self.btn_heatmap.setCursor(QCursor(Qt.PointingHandCursor))
+        self.btn_heatmap.setFixedSize(110, 30)
+        self.btn_heatmap.setStyleSheet("""
+                   QPushButton {
+                       background-color: #ff5722;
+                       color: white;
+                       border: none;
+                       border-radius: 4px;
+                       padding: 5px 10px;
+                   }
+                   QPushButton:hover {
+                       background-color: #e64a19;
+                   }
+               """)
+
+        # PSNR分析按钮
+        self.btn_psnr = QPushButton("定量分析")
+        self.btn_psnr.setIcon(QIcon(":/icons/images/icons/cil-clipboard.png"))
+        self.btn_psnr.setCursor(QCursor(Qt.PointingHandCursor))
+        self.btn_psnr.setFixedSize(110, 30)
+        self.btn_psnr.setStyleSheet("""
+            QPushButton {
+                background-color: #03a9f4;
+                color: white;
+                border: none;
+                border-radius: 4px;
+                padding: 5px 10px;
+            }
+            QPushButton:hover {
+                background-color: #0288d1;
+            }
+        """)
+
         # 添加控件到布局
         self.horizontalLayout_10.addWidget(self.combo1)
         self.horizontalLayout_10.addWidget(self.combo2)
         self.horizontalLayout_10.addStretch()  # 弹性空间：按钮靠右
         self.horizontalLayout_10.addWidget(self.btn_detect)
         self.horizontalLayout_10.addWidget(self.btn_heatmap)
+        self.horizontalLayout_10.addWidget(self.btn_psnr)
 
         # 添加 row_2 到页面主布局
         self.verticalLayout_R_image.addWidget(self.row_2)
@@ -1698,7 +1719,7 @@ class Ui_MainWindow(object):
 
         # 说明文字
         self.label_description_movie = QLabel("选择算法  →  开始检测  →  执行操作"
-                                              "      （左侧：复原后视频 右侧：原始视频）", self.frame_content_wid_1_movie)
+                                              "      （左侧：原始视频 右侧：复原后视频）", self.frame_content_wid_1_movie)
         self.label_description_movie.setStyleSheet("color: #6a7ba8; font-size: 9pt;")
         self.gridLayout_movie.addWidget(self.label_description_movie, 1, 0, 1, 2)
 
@@ -1764,12 +1785,29 @@ class Ui_MainWindow(object):
             }
         """)
 
+        # 播放/暂停 按钮
+        self.btn_pause_movie = QPushButton("暂停")
+        self.btn_pause_movie.setIcon(QIcon(":/icons/images/icons/cil-media-pause.png"))
+        self.btn_pause_movie.setCursor(QCursor(Qt.PointingHandCursor))
+        self.btn_pause_movie.setFixedSize(110, 30)
+        self.btn_pause_movie.setStyleSheet("""
+             QPushButton {
+                 background-color: #ff5722;
+                 color: white;
+                 border: none;
+                 border-radius: 4px;
+                 padding: 5px 10px;
+             }
+             QPushButton:hover {
+                 background-color: #e64a19;
+             }
+         """)
         # 加入布局
         self.horizontalLayout_controls_movie.addWidget(self.combo1_movie)
         self.horizontalLayout_controls_movie.addWidget(self.combo2_movie)
         self.horizontalLayout_controls_movie.addStretch()
         self.horizontalLayout_controls_movie.addWidget(self.btn_detect_movie)
-
+        self.horizontalLayout_controls_movie.addWidget(self.btn_pause_movie)
         # 加入到页面
         self.verticalLayout_R_movie.addWidget(self.row_2_movie)
 
@@ -1945,7 +1983,7 @@ class Ui_MainWindow(object):
     def retranslateUi(self, MainWindow):
         MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"MainWindow", None))
         self.titleLeftApp.setText(QCoreApplication.translate("MainWindow", u"火 眼 金 睛 🔥", None))
-        self.titleLeftDescription.setText(QCoreApplication.translate("MainWindow", u"我们的队伍 © 2025", None))
+        self.titleLeftDescription.setText(QCoreApplication.translate("MainWindow", u"风雨无阻队 © 2025", None))
         self.toggleButton.setText(QCoreApplication.translate("MainWindow", u"展开", None))
         self.btn_home.setText(QCoreApplication.translate("MainWindow", u"主页", None))
         self.btn_save.setText(QCoreApplication.translate("MainWindow", u"历史数据", None))
@@ -2064,7 +2102,7 @@ class Ui_MainWindow(object):
         self.btn_message.setText(QCoreApplication.translate("MainWindow", u"Message", None))
         self.btn_print.setText(QCoreApplication.translate("MainWindow", u"Print", None))
         self.btn_logout.setText(QCoreApplication.translate("MainWindow", u"Logout", None))
-        self.creditsLabel.setText(QCoreApplication.translate("MainWindow", u"制作人： 我们的队伍！", None))
+        self.creditsLabel.setText(QCoreApplication.translate("MainWindow", u"制作人： 风雨无阻队", None))
         self.version.setText(QCoreApplication.translate("MainWindow", u"v1.0.0", None))
     # retranslateUi
 
