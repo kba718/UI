@@ -1,4 +1,5 @@
 
+
 import sys
 import os
 import platform
@@ -14,7 +15,8 @@ from modules import *
 from widgets import *
 from generate_heatmap import generate_and_save_heatmaps
 from QuantitativeAnalysisDialog import QuantitativeAnalysisDialog
-os.environ["QT_FONT_DPI"] = "96" # FIX Problem for High DPI and Scale above 100%
+from camera_handler import CameraHandler
+os.environ["QT_FONT_DPI"] = "100" # 修改实现不同显示器的适配
 
 # SET AS GLOBAL WIDGETS
 # ///////////////////////////////////////////////////////////////
@@ -62,10 +64,12 @@ class MainWindow(QMainWindow):
         widgets.btn_save.clicked.connect(self.buttonClick)
         widgets.btn_image.clicked.connect(self.buttonClick)
         widgets.btn_video.clicked.connect(self.buttonClick)
+        widgets.btn_realtime.clicked.connect(self.buttonClick)
         widgets.btn_widgets.clicked.connect(self.buttonClick)
         widgets.btn_detect.clicked.connect(self.run_restore_if_needed)
         widgets.btn_heatmap.clicked.connect(self.show_heatmap_comparison)
         widgets.btn_psnr.clicked.connect(self.show_quantitative_analysis_dialog)
+
         # EXTRA LEFT BOX
         def openCloseLeftBox():
             UIFunctions.toggleLeftBox(self, True)
@@ -90,7 +94,6 @@ class MainWindow(QMainWindow):
         if useCustomTheme:
             # LOAD AND APPLY STYLE
             UIFunctions.theme(self, themeFile, True)
-
             # SET HACKS
             AppFunctions.setThemeHack(self)
 
@@ -99,6 +102,8 @@ class MainWindow(QMainWindow):
         widgets.stackedWidget.setCurrentWidget(widgets.home)
         widgets.btn_home.setStyleSheet(UIFunctions.selectMenu(widgets.btn_home.styleSheet()))
         widgets.btn_browse.clicked.connect(self.open_and_save_image)
+        self.camera_handler = CameraHandler(widgets.label_rt_video)
+        widgets.btn_realtime_start.clicked.connect(self.toggle_camera)
     # BUTTONS CLICK
     # Post here your functions for clicked buttons
     # ///////////////////////////////////////////////////////////////
@@ -148,6 +153,12 @@ class MainWindow(QMainWindow):
         #     # 创建并显示定量分析弹窗
         #     psnr_dialog = QuantitativeAnalysisDialog(self)
         #     psnr_dialog.exec_()  # 显示弹窗并等待关闭
+
+        if btnName == "btn_realtime":
+            widgets.stackedWidget.setCurrentWidget(widgets.R_realtime_detect)
+            UIFunctions.resetStyle(self, btnName)
+            btn.setStyleSheet(UIFunctions.selectMenu(btn.styleSheet()))
+
     # 生成保存路径：带编号 + 日期 + 时间
     def generate_image_save_path(self):
         base_dir = os.path.join(os.path.dirname(__file__), "O_picture")
@@ -232,7 +243,7 @@ class MainWindow(QMainWindow):
 
         except Exception as e:
             print(f"生成热力图失败: {e}")
-
+    # 定量分析
     def show_quantitative_analysis_dialog(self):
         print("打开定量分析弹窗")
 
@@ -260,10 +271,47 @@ class MainWindow(QMainWindow):
 
         # 打开对话框
         psnr_dialog.exec()  # 弹出对话框并等待用户关闭
-    # 让图片适应尺寸
+
+    def toggle_camera(self):
+        self.camera_handler.toggle()
+        if self.camera_handler.running:
+            widgets.btn_realtime_start.setText("暂停")
+            widgets.btn_realtime_start.setIcon(QIcon(":/icons/images/icons/cil-media-pause.png"))
+            widgets.btn_realtime_start.setStyleSheet("""
+                QPushButton {
+                    background-color: #dc3545;  /* 红色 */
+                    color: white;
+                    border: none;
+                    border-radius: 4px;
+                    padding: 5px 10px;
+                }
+                QPushButton:hover {
+                    background-color: #c82333;
+                }
+            """)
+        else:
+            widgets.btn_realtime_start.setText("开始")
+            widgets.btn_realtime_start.setIcon(QIcon(":/icons/images/icons/cil-media-play.png"))
+            widgets.btn_realtime_start.setStyleSheet("""
+                QPushButton {
+                    background-color: #28a745;  /* 绿色 */
+                    color: white;
+                    border: none;
+                    border-radius: 4px;
+                    padding: 5px 10px;
+                }
+                QPushButton:hover {
+                    background-color: #218838;
+                }
+            """)
+
     def resizeEvent(self, event):
         super().resizeEvent(event)
-        # 自适应缩放
+
+        # 更新缩放控件
+        UIFunctions.resize_grips(self)
+
+        # 自适应图片缩放
         if hasattr(widgets, 'label_before') and hasattr(widgets, 'label_after'):
             before_pixmap = widgets.label_before.pixmap()
             after_pixmap = widgets.label_after.pixmap()
@@ -271,12 +319,6 @@ class MainWindow(QMainWindow):
                 widgets.label_before.setPixmap(before_pixmap.scaled(widgets.label_before.size(), Qt.KeepAspectRatio))
             if after_pixmap:
                 widgets.label_after.setPixmap(after_pixmap.scaled(widgets.label_after.size(), Qt.KeepAspectRatio))
-
-    # RESIZE EVENTS
-    # ///////////////////////////////////////////////////////////////
-    def resizeEvent(self, event):
-        # Update Size Grips
-        UIFunctions.resize_grips(self)
 
     # MOUSE CLICK EVENTS
     # ///////////////////////////////////////////////////////////////
@@ -294,4 +336,4 @@ if __name__ == "__main__":
     app = QApplication(sys.argv)
     app.setWindowIcon(QIcon("icon.ico"))
     window = MainWindow()
-    sys.exit(app.exec_())
+    sys.exit(app.exec())

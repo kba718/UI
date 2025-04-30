@@ -724,6 +724,15 @@ class Ui_MainWindow(object):
         self.btn_video.setStyleSheet(u"background-image: url(:/icons/images/icons/cil-movie.png);")
         self.verticalLayout_8.addWidget(self.btn_video)
 
+        self.btn_realtime = QPushButton(self.topMenu)
+        self.btn_realtime.setObjectName(u"btn_realtime")
+        self.btn_realtime.setMinimumSize(QSize(0, 45))
+        self.btn_realtime.setFont(font)
+        self.btn_realtime.setCursor(QCursor(Qt.PointingHandCursor))
+        self.btn_realtime.setLayoutDirection(Qt.LeftToRight)
+        self.btn_realtime.setStyleSheet(u"background-image: url(:/icons/images/icons/cil-camera.png);")
+        self.verticalLayout_8.addWidget(self.btn_realtime)
+
         self.btn_widgets = QPushButton(self.topMenu)
         self.btn_widgets.setObjectName(u"btn_widgets")
         sizePolicy.setHeightForWidth(self.btn_widgets.sizePolicy().hasHeightForWidth())
@@ -1582,7 +1591,7 @@ class Ui_MainWindow(object):
 
 
         # 检测按钮
-        self.btn_detect = QPushButton("开始检测")
+        self.btn_detect = QPushButton("开始")
         self.btn_detect.setIcon(QIcon(":/icons/images/icons/cil-media-play.png"))
         self.btn_detect.setCursor(QCursor(Qt.PointingHandCursor))
         self.btn_detect.setFixedSize(110, 30)
@@ -1665,7 +1674,75 @@ class Ui_MainWindow(object):
         # 把页面加到 stackedWidget
         self.stackedWidget.addWidget(self.R_image)
 
+        # 创建实时检测页面 R_realtime_detect
+        self.R_realtime_detect = QWidget()
+        self.R_realtime_detect.setObjectName("R_realtime_detect")
+        self.R_realtime_detect.setStyleSheet("background-color: white;")
+        self.verticalLayout_R_realtime = QVBoxLayout(self.R_realtime_detect)
+        self.verticalLayout_R_realtime.setContentsMargins(10, 10, 10, 10)
+        self.verticalLayout_R_realtime.setSpacing(0)
 
+        # ========================= row_1 顶部信息栏 =========================
+        self.row_rt_1 = QFrame(self.R_realtime_detect)
+        self.row_rt_1.setMinimumHeight(20)
+        self.row_rt_1.setMaximumHeight(20)
+        self.row_rt_1.setFrameShape(QFrame.StyledPanel)
+        self.row_rt_1.setFrameShadow(QFrame.Raised)
+        self.horizontalLayout_rt_1 = QHBoxLayout(self.row_rt_1)
+        self.horizontalLayout_rt_1.setContentsMargins(0, 0, 0, 0)
+
+        self.label_rt_info = QLabel("点击下方按钮开始调用摄像头并实时检测", self.row_rt_1)
+        self.label_rt_info.setStyleSheet("color: #6a7ba8; font-size: 10pt;")
+        self.horizontalLayout_rt_1.addWidget(self.label_rt_info)
+
+        self.verticalLayout_R_realtime.addWidget(self.row_rt_1)
+
+        # ========================= row_2 控制栏 =========================
+        self.row_rt_2 = QFrame(self.R_realtime_detect)
+        self.row_rt_2.setMinimumHeight(40)
+        self.row_rt_2.setMaximumHeight(40)
+        self.row_rt_2.setFrameShape(QFrame.StyledPanel)
+        self.row_rt_2.setFrameShadow(QFrame.Raised)
+        self.horizontalLayout_rt_2 = QHBoxLayout(self.row_rt_2)
+        self.horizontalLayout_rt_2.setContentsMargins(0, 0, 10, 0)
+        self.horizontalLayout_rt_2.setSpacing(10)
+
+        self.btn_realtime_start = QPushButton("开始")
+        self.btn_realtime_start.setIcon(QIcon(":/icons/images/icons/cil-media-play.png"))
+        self.btn_realtime_start.setCursor(QCursor(Qt.PointingHandCursor))
+        self.btn_realtime_start.setFixedSize(140, 30)
+        self.btn_realtime_start.setStyleSheet("""
+            QPushButton {
+                background-color: #28a745;
+                color: white;
+                border: none;
+                border-radius: 4px;
+                padding: 5px 10px;
+            }
+            QPushButton:hover {
+                background-color: #218838;
+            }
+        """)
+        self.horizontalLayout_rt_2.addStretch()
+        self.horizontalLayout_rt_2.addWidget(self.btn_realtime_start)
+
+        self.verticalLayout_R_realtime.addWidget(self.row_rt_2)
+
+        # ========================= row_3 视频显示区域 =========================
+        self.row_rt_3 = QFrame(self.R_realtime_detect)
+        self.row_rt_3.setMinimumHeight(480)
+        self.row_rt_3.setFrameShape(QFrame.StyledPanel)
+        self.row_rt_3.setFrameShadow(QFrame.Raised)
+        self.verticalLayout_rt_3 = QVBoxLayout(self.row_rt_3)
+        self.verticalLayout_rt_3.setContentsMargins(0, 0, 0, 0)
+        self.label_rt_video = QLabel("视频画面显示区", self.row_rt_3)
+        self.label_rt_video.setAlignment(Qt.AlignCenter)
+        self.label_rt_video.setStyleSheet("background-color: transparent; color: white;")
+        self.row_rt_3.setStyleSheet("background-color: transparent;")
+        self.verticalLayout_rt_3.addWidget(self.label_rt_video)
+        self.verticalLayout_R_realtime.addWidget(self.row_rt_3)
+        # 加入 stackedWidget 页面管理器
+        self.stackedWidget.addWidget(self.R_realtime_detect)
 
         # 创建视频处理页面 R_movie
         self.R_movie = QWidget()
@@ -1768,7 +1845,7 @@ class Ui_MainWindow(object):
         """)
 
         # 检测按钮
-        self.btn_detect_movie = QPushButton("开始检测")
+        self.btn_detect_movie = QPushButton("开始")
         self.btn_detect_movie.setIcon(QIcon(":/icons/images/icons/cil-media-play.png"))
         self.btn_detect_movie.setCursor(QCursor(Qt.PointingHandCursor))
         self.btn_detect_movie.setFixedSize(110, 30)
@@ -1831,6 +1908,8 @@ class Ui_MainWindow(object):
 
         # 最后！把整个R_movie页面注册到stackedWidget
         self.stackedWidget.addWidget(self.R_movie)
+
+
 
 
 
@@ -1989,6 +2068,7 @@ class Ui_MainWindow(object):
         self.btn_save.setText(QCoreApplication.translate("MainWindow", u"历史数据", None))
         self.btn_image.setText(QCoreApplication.translate("MainWindow", u"图片处理", None))
         self.btn_video.setText(QCoreApplication.translate("MainWindow", u"视频处理", None))
+        self.btn_realtime.setText(QCoreApplication.translate("MainWindow", u"实时监测", None))
         self.btn_widgets.setText(QCoreApplication.translate("MainWindow", u"Widgets", None))
 
         self.btn_exit.setText(QCoreApplication.translate("MainWindow", u"退出", None))
@@ -2105,4 +2185,3 @@ class Ui_MainWindow(object):
         self.creditsLabel.setText(QCoreApplication.translate("MainWindow", u"制作人： 风雨无阻队", None))
         self.version.setText(QCoreApplication.translate("MainWindow", u"v1.0.0", None))
     # retranslateUi
-
