@@ -1,22 +1,32 @@
-
-
 import sys
 import os
 import platform
 import shutil
 from datetime import datetime
+
+# 1. 必须先导入 PySide6（GUI 模块优先）
 from PySide6.QtWidgets import QFileDialog
+from PySide6.QtGui import QPixmap, QImage
+
+# 2. 再导入 OpenCV
+import cv2
+
+# 3. 其他路径、功能模块
 sys.path.append(os.path.join(os.path.dirname(__file__), "code1_ALL", "Denoise", "MPMF-Net-master"))
+sys.path.append(os.path.join(os.path.dirname(__file__), "YOLO"))
+
 from utils import generate_result_image_path
 from run_model import run_all_in_one_restore
-from PySide6.QtGui import QPixmap
 from slide_compare_widget import SlideCompareWidget
 from modules import *
 from widgets import *
 from generate_heatmap import generate_and_save_heatmaps
 from QuantitativeAnalysisDialog import QuantitativeAnalysisDialog
 from camera_handler import CameraHandler
-os.environ["QT_FONT_DPI"] = "100" # 修改实现不同显示器的适配
+from ultralytics import YOLO
+
+# 4. 设定 Qt 缩放环境变量
+os.environ["QT_FONT_DPI"] = "130"
 
 # SET AS GLOBAL WIDGETS
 # ///////////////////////////////////////////////////////////////
@@ -61,11 +71,11 @@ class MainWindow(QMainWindow):
 
         # LEFT MENUS
         widgets.btn_home.clicked.connect(self.buttonClick)
-        widgets.btn_save.clicked.connect(self.buttonClick)
         widgets.btn_image.clicked.connect(self.buttonClick)
         widgets.btn_video.clicked.connect(self.buttonClick)
         widgets.btn_realtime.clicked.connect(self.buttonClick)
         widgets.btn_widgets.clicked.connect(self.buttonClick)
+        widgets.btn_save.clicked.connect(self.buttonClick)
         widgets.btn_detect.clicked.connect(self.run_restore_if_needed)
         widgets.btn_heatmap.clicked.connect(self.show_heatmap_comparison)
         widgets.btn_psnr.clicked.connect(self.show_quantitative_analysis_dialog)
@@ -212,9 +222,46 @@ class MainWindow(QMainWindow):
             self.current_save_path = save_path
             self.current_output_path = output_path
 
+
+
+
         elif mode == "ALL-IN-ONE" and function == "复原+检测":
-            widgets.compare_widget.clear()
-            widgets.compare_widget.setText("检测模块尚未集成")
+            def cv2_to_qpixmap(cv_img):
+                if cv_img is None:
+                    return QPixmap()
+                rgb_img = cv2.cvtColor(cv_img, cv2.COLOR_BGR2RGB)
+                h, w, ch = rgb_img.shape
+                return QPixmap(QImage(rgb_img.data, w, h, ch * w, QImage.Format_RGB888))
+
+            if not hasattr(self, "current_output_path") or not os.path.exists(self.current_output_path):
+                print("请先执行一次复原操作，再进行检测！")
+                return
+
+            original_img = cv2.imread(self.current_save_path)
+            restored_img = cv2.imread(self.current_output_path)
+
+            if original_img is None or restored_img is None:
+                print("图像读取失败")
+                return
+
+            # 加载 YOLO 模型（原图使用 s，复原图使用 x）
+            yolo_dir = os.path.join(os.path.dirname(__file__), "YOLO")
+            model_o = YOLO(os.path.join(yolo_dir, "yolov12n.pt"))
+            model_r = YOLO(os.path.join(yolo_dir, "yolov12x.pt"))
+
+            # 检测原图
+            results_o = model_o.predict(original_img, save=False)
+            detected_o = results_o[0].plot()
+            # 检测复原图
+            results_r = model_r.predict(restored_img, save=False)
+            detected_r = results_r[0].plot()
+            # 展示检测图
+            widgets.slide_compare.setImages(
+                cv2_to_qpixmap(detected_o),
+                cv2_to_qpixmap(detected_r)
+            )
+            print("原图与复原图检测完成，已显示对比图")
+
         else:
             print("未匹配到处理算法")
 

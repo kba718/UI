@@ -690,20 +690,6 @@ class Ui_MainWindow(object):
         # 将“主页”按钮添加到顶部菜单的布局中
         self.verticalLayout_8.addWidget(self.btn_home)
 
-
-        self.btn_save = QPushButton(self.topMenu)
-        self.btn_save.setObjectName(u"btn_save")
-        sizePolicy.setHeightForWidth(self.btn_save.sizePolicy().hasHeightForWidth())
-        self.btn_save.setSizePolicy(sizePolicy)
-        self.btn_save.setMinimumSize(QSize(0, 45))
-        self.btn_save.setFont(font)
-        self.btn_save.setCursor(QCursor(Qt.PointingHandCursor))
-        self.btn_save.setLayoutDirection(Qt.LeftToRight)
-        self.btn_save.setStyleSheet(u"background-image: url(:/icons/images/icons/cil-save.png)")
-
-        self.verticalLayout_8.addWidget(self.btn_save)
-
-
         # 新增 图片按钮
         self.btn_image = QPushButton(self.topMenu)
         self.btn_image.setObjectName(u"btn_image")
@@ -741,7 +727,19 @@ class Ui_MainWindow(object):
         self.btn_widgets.setFont(font)
         self.btn_widgets.setCursor(QCursor(Qt.PointingHandCursor))
         self.btn_widgets.setLayoutDirection(Qt.LeftToRight)
-        self.btn_widgets.setStyleSheet(u"background-image: url(:/icons/images/icons/cil-gamepad.png);")
+        self.btn_widgets.setStyleSheet(u"background-image: url(:/icons/images/icons/cil-save.png);")
+
+        self.btn_save = QPushButton(self.topMenu)
+        self.btn_save.setObjectName(u"btn_save")
+        sizePolicy.setHeightForWidth(self.btn_save.sizePolicy().hasHeightForWidth())
+        self.btn_save.setSizePolicy(sizePolicy)
+        self.btn_save.setMinimumSize(QSize(0, 45))
+        self.btn_save.setFont(font)
+        self.btn_save.setCursor(QCursor(Qt.PointingHandCursor))
+        self.btn_save.setLayoutDirection(Qt.LeftToRight)
+        self.btn_save.setStyleSheet(u"background-image: url(:/icons/images/icons/cil-history.png)")
+
+        self.verticalLayout_8.addWidget(self.btn_save)
 
         self.verticalLayout_8.addWidget(self.btn_widgets)
 
@@ -2065,12 +2063,11 @@ class Ui_MainWindow(object):
         self.titleLeftDescription.setText(QCoreApplication.translate("MainWindow", u"风雨无阻队 © 2025", None))
         self.toggleButton.setText(QCoreApplication.translate("MainWindow", u"展开", None))
         self.btn_home.setText(QCoreApplication.translate("MainWindow", u"主页", None))
-        self.btn_save.setText(QCoreApplication.translate("MainWindow", u"历史数据", None))
         self.btn_image.setText(QCoreApplication.translate("MainWindow", u"图片处理", None))
         self.btn_video.setText(QCoreApplication.translate("MainWindow", u"视频处理", None))
         self.btn_realtime.setText(QCoreApplication.translate("MainWindow", u"实时监测", None))
-        self.btn_widgets.setText(QCoreApplication.translate("MainWindow", u"Widgets", None))
-
+        self.btn_save.setText(QCoreApplication.translate("MainWindow", u"历史数据", None))
+        self.btn_widgets.setText(QCoreApplication.translate("MainWindow", u"日志记录", None))
         self.btn_exit.setText(QCoreApplication.translate("MainWindow", u"退出", None))
         self.toggleLeftBox.setText(QCoreApplication.translate("MainWindow", u"侧边栏", None))
         self.extraLabel.setText(QCoreApplication.translate("MainWindow", u"侧边栏", None))
