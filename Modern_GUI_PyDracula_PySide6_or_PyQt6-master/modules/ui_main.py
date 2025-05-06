@@ -884,44 +884,44 @@ class Ui_MainWindow(object):
         self.verticalLayout_11.setSpacing(0)
         self.verticalLayout_11.setObjectName(u"verticalLayout_11")
         self.verticalLayout_11.setContentsMargins(0, 0, 0, 0)
-        # 创建“分享”按钮
-        self.btn_share = QPushButton(self.extraTopMenu)
-        self.btn_share.setObjectName(u"btn_share")
-        sizePolicy.setHeightForWidth(self.btn_share.sizePolicy().hasHeightForWidth())
-        self.btn_share.setSizePolicy(sizePolicy)
-        self.btn_share.setMinimumSize(QSize(0, 45))
-        self.btn_share.setFont(font)
-        self.btn_share.setCursor(QCursor(Qt.PointingHandCursor))
-        self.btn_share.setLayoutDirection(Qt.LeftToRight)
-        self.btn_share.setStyleSheet(u"background-image: url(:/icons/images/icons/cil-share-boxed.png);")
-
-        self.verticalLayout_11.addWidget(self.btn_share)
-
-        # 创建“调整”按钮
-        self.btn_adjustments = QPushButton(self.extraTopMenu)
-        self.btn_adjustments.setObjectName(u"btn_adjustments")
-        sizePolicy.setHeightForWidth(self.btn_adjustments.sizePolicy().hasHeightForWidth())
-        self.btn_adjustments.setSizePolicy(sizePolicy)
-        self.btn_adjustments.setMinimumSize(QSize(0, 45))
-        self.btn_adjustments.setFont(font)
-        self.btn_adjustments.setCursor(QCursor(Qt.PointingHandCursor))
-        self.btn_adjustments.setLayoutDirection(Qt.LeftToRight)
-        self.btn_adjustments.setStyleSheet(u"background-image: url(:/icons/images/icons/cil-equalizer.png);")
-
-        self.verticalLayout_11.addWidget(self.btn_adjustments)
-
-        # 创建“更多”按钮
-        self.btn_more = QPushButton(self.extraTopMenu)
-        self.btn_more.setObjectName(u"btn_more")
-        sizePolicy.setHeightForWidth(self.btn_more.sizePolicy().hasHeightForWidth())
-        self.btn_more.setSizePolicy(sizePolicy)
-        self.btn_more.setMinimumSize(QSize(0, 45))
-        self.btn_more.setFont(font)
-        self.btn_more.setCursor(QCursor(Qt.PointingHandCursor))
-        self.btn_more.setLayoutDirection(Qt.LeftToRight)
-        self.btn_more.setStyleSheet(u"background-image: url(:/icons/images/icons/cil-layers.png);")
-
-        self.verticalLayout_11.addWidget(self.btn_more)
+        # # 创建“分享”按钮
+        # self.btn_share = QPushButton(self.extraTopMenu)
+        # self.btn_share.setObjectName(u"btn_share")
+        # sizePolicy.setHeightForWidth(self.btn_share.sizePolicy().hasHeightForWidth())
+        # self.btn_share.setSizePolicy(sizePolicy)
+        # self.btn_share.setMinimumSize(QSize(0, 45))
+        # self.btn_share.setFont(font)
+        # self.btn_share.setCursor(QCursor(Qt.PointingHandCursor))
+        # self.btn_share.setLayoutDirection(Qt.LeftToRight)
+        # self.btn_share.setStyleSheet(u"background-image: url(:/icons/images/icons/cil-share-boxed.png);")
+        #
+        # self.verticalLayout_11.addWidget(self.btn_share)
+        #
+        # # 创建“调整”按钮
+        # self.btn_adjustments = QPushButton(self.extraTopMenu)
+        # self.btn_adjustments.setObjectName(u"btn_adjustments")
+        # sizePolicy.setHeightForWidth(self.btn_adjustments.sizePolicy().hasHeightForWidth())
+        # self.btn_adjustments.setSizePolicy(sizePolicy)
+        # self.btn_adjustments.setMinimumSize(QSize(0, 45))
+        # self.btn_adjustments.setFont(font)
+        # self.btn_adjustments.setCursor(QCursor(Qt.PointingHandCursor))
+        # self.btn_adjustments.setLayoutDirection(Qt.LeftToRight)
+        # self.btn_adjustments.setStyleSheet(u"background-image: url(:/icons/images/icons/cil-equalizer.png);")
+        #
+        # self.verticalLayout_11.addWidget(self.btn_adjustments)
+        #
+        # # 创建“更多”按钮
+        # self.btn_more = QPushButton(self.extraTopMenu)
+        # self.btn_more.setObjectName(u"btn_more")
+        # sizePolicy.setHeightForWidth(self.btn_more.sizePolicy().hasHeightForWidth())
+        # self.btn_more.setSizePolicy(sizePolicy)
+        # self.btn_more.setMinimumSize(QSize(0, 45))
+        # self.btn_more.setFont(font)
+        # self.btn_more.setCursor(QCursor(Qt.PointingHandCursor))
+        # self.btn_more.setLayoutDirection(Qt.LeftToRight)
+        # self.btn_more.setStyleSheet(u"background-image: url(:/icons/images/icons/cil-layers.png);")
+        #
+        # self.verticalLayout_11.addWidget(self.btn_more)
 
 
         self.verticalLayout_12.addWidget(self.extraTopMenu, 0, Qt.AlignTop)
@@ -2069,29 +2069,79 @@ class Ui_MainWindow(object):
         self.btn_save.setText(QCoreApplication.translate("MainWindow", u"历史数据", None))
         self.btn_widgets.setText(QCoreApplication.translate("MainWindow", u"日志记录", None))
         self.btn_exit.setText(QCoreApplication.translate("MainWindow", u"退出", None))
-        self.toggleLeftBox.setText(QCoreApplication.translate("MainWindow", u"侧边栏", None))
-        self.extraLabel.setText(QCoreApplication.translate("MainWindow", u"侧边栏", None))
+        self.toggleLeftBox.setText(QCoreApplication.translate("MainWindow", u"系统信息", None))
+        self.extraLabel.setText(QCoreApplication.translate("MainWindow", u"系统信息", None))
 #if QT_CONFIG(tooltip)
-        self.extraCloseColumnBtn.setToolTip(QCoreApplication.translate("MainWindow", u"关闭侧边栏", None))
+        self.extraCloseColumnBtn.setToolTip(QCoreApplication.translate("MainWindow", u"关闭", None))
 #endif // QT_CONFIG(tooltip)
         self.extraCloseColumnBtn.setText("")
-        self.btn_share.setText(QCoreApplication.translate("MainWindow", u"Share", None))
-        self.btn_adjustments.setText(QCoreApplication.translate("MainWindow", u"Adjustments", None))
-        self.btn_more.setText(QCoreApplication.translate("MainWindow", u"More", None))
-        self.textEdit.setHtml(QCoreApplication.translate("MainWindow", u"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><meta charset=\"utf-8\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:'Segoe UI'; font-size:10pt; font-weight:400; font-style:normal;\">\n"
-"<p align=\"center\" style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:12pt; font-weight:600; color:#ff79c6;\">PyDracula</span></p>\n"
-"<p align=\"center\" style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" color:#ffffff;\">An interface created using Python and PySide (support for PyQt), and with colors based on the Dracula theme created by Zeno Rocha.</span></p>\n"
-"<p align=\"center\" style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-inde"
-                        "nt:0; text-indent:0px;\"><span style=\" color:#ffffff;\">MIT License</span></p>\n"
-"<p align=\"center\" style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" color:#bd93f9;\">Created by: Wanderson M. Pimenta</span></p>\n"
-"<p align=\"center\" style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:12pt; font-weight:600; color:#ff79c6;\">Convert UI</span></p>\n"
-"<p align=\"center\" style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:9pt; color:#ffffff;\">pyside6-uic main.ui &gt; ui_main.py</span></p>\n"
-"<p align=\"center\" style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:12pt; font-weight:600; color:#ff79c6;\">Convert QRC</span></p>\n"
-"<p align=\"center\" "
-                        "style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:9pt; color:#ffffff;\">pyside6-rcc resources.qrc -o resources_rc.py</span></p></body></html>", None))
+        self.textEdit.setHtml(QCoreApplication.translate("MainWindow", u"""
+        <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd">
+        <html>
+        <head>
+          <meta name="qrichtext" content="1" />
+          <meta charset="utf-8" />
+          <style type="text/css">
+            p, li { white-space: pre-wrap; }
+          </style>
+        </head>
+        <body style=" font-family:'Segoe UI'; font-size:10pt; font-weight:400; font-style:normal;">
+
+<!-- 系统名称 -->
+<p align="left" style="margin-top:0px; margin-bottom:6px;">
+  <span style="font-family:'Segoe UI', '微软雅黑', sans-serif; font-size:18pt; font-weight:600; letter-spacing:1px; color:#ff79c6;">    火 眼 金 睛</span>
+</p>
+
+<!-- 简介 -->
+<p align="left" style="margin-top:6px; margin-bottom:20px; line-height:130%;">
+  <span style="font-family:'Segoe UI', '微软雅黑', sans-serif; font-size:7.5pt; color:#ffb6f2;">面向交通场景的恶劣天气图像复原与检测系统</span>
+</p>
+
+<!-- 系统功能定位 -->
+<p align="left" style="margin-top:12px; margin-bottom:6px;">
+<span style="font-size:10pt; font-weight:600; color:#ff79c6;">系统功能定位:</span>
+</p>
+<p align="left" style="margin-top:6px; margin-bottom:12px; line-height:130%;">
+<span style="font-size:9pt; color:#ffffff;">致力于提升智能交通系统在极端天气下的视觉感知能力。</span>
+</p>
+
+<!-- 视觉复原模块 -->
+<p align="left" style="margin-top:12px; margin-bottom:6px;">
+<span style="font-size:10pt; font-weight:600; color:#ff79c6;">视觉复原模块:</span>
+</p>
+<p align="left" style="margin-top:6px; margin-bottom:12px; line-height:130%;">
+<span style="font-size:9pt; color:#ffffff;">采用MPMF-Net All-in-One 网络，支持雨、雾、雪、低光等恶劣天气图像的一体化增强复原。</span>
+</p>
+
+<!-- 目标检测模块 -->
+<p align="left" style="margin-top:12px; margin-bottom:6px;">
+<span style="font-size:10pt; font-weight:600; color:#ff79c6;">目标检测模块:</span>
+</p>
+<p align="left" style="margin-top:6px; margin-bottom:12px; line-height:130%;">
+<span style="font-size:9pt; color:#ffffff;">系统集成 YOLOv12 高性能目标检测框架，兼顾速度与精度，适应复杂交通场景检测需求。</span>
+</p>
+
+
+
+<!-- 技术说明 -->
+<p align="left" style="margin-top:12px; margin-bottom:12px; line-height:130%;">
+<span style="font-size:9pt; color:#bbbbbb;">本系统复原模块基于我团队发表于 AAAI 2024 的 MPMF-Net 算法，具备领先的清晰度恢复能力与目标检测友好性。</span>
+</p>
+
+<p align="left" style="margin-top:25px; margin-bottom:6px; line-height:130%;">
+<span style="font-size:9pt; color:#bd93f9;">开发团队：风雨无阻队</span>
+</p>
+<p align="left" style="margin-top:6px; margin-bottom:6px; line-height:130%;">
+<span style="font-size:9pt; color:#bd93f9;">系统版本：v1.0.0</span>
+</p>
+<p align="left" style="margin-top:6px; margin-bottom:6px; line-height:130%;">
+<span style="font-size:9pt; color:#bd93f9;">系统最后编译时间：2025/05/06</span>
+</p>
+
+        </body>
+        </html>
+        """, None))
+
         self.titleRightInfo.setText(QCoreApplication.translate("MainWindow", u"面向智能驾驶的恶劣天气图像复原与检测系统", None))
 #if QT_CONFIG(tooltip)
         self.settingsTopBtn.setToolTip(QCoreApplication.translate("MainWindow", u"Settings", None))
