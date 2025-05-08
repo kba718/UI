@@ -24,9 +24,12 @@ from generate_heatmap import generate_and_save_heatmaps
 from QuantitativeAnalysisDialog import QuantitativeAnalysisDialog
 from camera_handler import CameraHandler
 from ultralytics import YOLO
-
+from PySide6.QtWidgets import QApplication
+from login_window import LoginDialog
+from database import init_db
+import sys
 # 4. 设定 Qt 缩放环境变量
-os.environ["QT_FONT_DPI"] = "130"
+os.environ["QT_FONT_DPI"] = "160"
 
 # SET AS GLOBAL WIDGETS
 # ///////////////////////////////////////////////////////////////
@@ -380,7 +383,13 @@ class MainWindow(QMainWindow):
             print('Mouse click: RIGHT CLICK')
 
 if __name__ == "__main__":
+    init_db()
     app = QApplication(sys.argv)
-    app.setWindowIcon(QIcon("icon.ico"))
-    window = MainWindow()
-    sys.exit(app.exec())
+    login = LoginDialog()
+    if login.exec() == QDialog.Accepted:
+        app.setWindowIcon(QIcon("icon.ico"))
+        window = MainWindow()  # 启动你的主界面
+        window.show()
+        sys.exit(app.exec())
+    else:
+        sys.exit()

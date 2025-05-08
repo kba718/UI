@@ -2125,7 +2125,7 @@ class Ui_MainWindow(object):
 
 <!-- 技术说明 -->
 <p align="left" style="margin-top:12px; margin-bottom:12px; line-height:130%;">
-<span style="font-size:9pt; color:#bbbbbb;">本系统复原模块基于我团队发表于 AAAI 2024 的 MPMF-Net 算法，具备领先的清晰度恢复能力与目标检测友好性。</span>
+<span style="font-size:9pt; color:#bbbbbb;">本系统复原模块基于我团队发表于 AAAI 2025 的 MPMF-Net 算法，具备领先的清晰度恢复能力与目标检测友好性。</span>
 </p>
 
 <p align="left" style="margin-top:25px; margin-bottom:6px; line-height:130%;">
